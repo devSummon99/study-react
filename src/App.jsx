@@ -1,7 +1,10 @@
 import { useState } from 'react'
+
 import './App.css'
 
-function App() {
+function App(props) {
+  const [notes, setNotes] = useState(props.notes);
+  /*
   const [count, setCount] = useState({
      left : 0,
      right : 0,
@@ -28,10 +31,10 @@ function App() {
     })
     setClicker(prevClickers => ([...prevClickers, "R"]))
   }
-
+*/
   return (
     <>
-      <div>
+      {/*<div>
        {count.left}
        <button onClick={handleClickLeft}>left</button>
        <button onClick={handleClickRight}>right</button>
@@ -39,7 +42,17 @@ function App() {
        <p>Clicks totales: {count.clicks}</p>
        <p>{clicker.join(", ")}</p>
       </div>
-     
+     */}
+
+     <div>
+      {notes.map((note) => (
+        <div key={note.id} className="note">
+          <h2>{note.title}</h2>
+          <p>{note.description}</p>
+          <p>{note.creationDate}</p>
+        </div>
+      ))}
+     </div>
     </>
   )
 }

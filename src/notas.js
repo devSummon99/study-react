@@ -1,8 +1,3 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-
 const notes = [
   {
     id: 1,
@@ -24,8 +19,4 @@ const notes = [
   }
 ];
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App  notes={notes}/>
-  </StrictMode>,
-)
+export default notes;
