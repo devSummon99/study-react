@@ -4,6 +4,7 @@ import './App.css'
 
 function App(props) {
   const [notes, setNotes] = useState(props.notes);
+  const [newNote, setNewNotes] = useState("");
   /*
   const [count, setCount] = useState({
      left : 0,
@@ -32,6 +33,33 @@ function App(props) {
     setClicker(prevClickers => ([...prevClickers, "R"]))
   }
 */
+const handleChange = (e) => {
+setNewNotes(e.target.value);
+}
+
+const handleClick = () => {
+  let id =  Math.random();
+  console.log(notes.lenght)
+ 
+  const noteAddtoState = {
+   id:id,
+   title: `creando nota ${id}`,
+   description: newNote,
+   creationDate: new Date().toISOString(),
+  }
+  console.log(noteAddtoState);
+  setNotes(notes.concat(noteAddtoState));
+  setNewNotes("")
+
+ /*
+    id: 1, 
+    title: "Meeting Notes",
+    description: "Discuss project milestones and deadlines.",
+    creationDate: "2023-03-01"
+  },*/
+
+
+}
   return (
     <>
       {/*<div>
@@ -52,6 +80,11 @@ function App(props) {
           <p>{note.creationDate}</p>
         </div>
       ))}
+
+    <div>
+      <input type="text" onChange={handleChange} value={newNote}/>
+      <button onClick={handleClick}>crear nota</button>
+    </div>
      </div>
     </>
   )
