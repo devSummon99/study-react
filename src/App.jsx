@@ -37,8 +37,9 @@ const handleChange = (e) => {
 setNewNotes(e.target.value);
 }
 
-const handleClick = () => {
-  let id =  Math.random();
+const handleSubmit = (event) => {
+  event.preventDefault()
+  let id =  Math.random(1);
   console.log(notes.lenght)
  
   const noteAddtoState = {
@@ -81,10 +82,10 @@ const handleClick = () => {
         </div>
       ))}
 
-    <div>
+    <form onSubmit={handleSubmit}>
       <input type="text" onChange={handleChange} value={newNote}/>
-      <button onClick={handleClick}>crear nota</button>
-    </div>
+      <button >crear nota</button>
+      </form>
      </div>
     </>
   )
