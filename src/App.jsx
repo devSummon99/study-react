@@ -5,6 +5,7 @@ import './App.css'
 function App(props) {
   const [notes, setNotes] = useState(props.notes);
   const [newNote, setNewNotes] = useState("");
+  const [seeAll,setSeeAll] = useState(true)
   /*
   const [count, setCount] = useState({
      left : 0,
@@ -61,6 +62,10 @@ const handleSubmit = (event) => {
 
 
 }
+
+const handleShowAll = () =>{
+  setSeeAll(() => !seeAll);
+}
   return (
     <>
       {/*<div>
@@ -74,7 +79,12 @@ const handleSubmit = (event) => {
      */}
 
      <div>
-      {notes.map((note) => (
+     <h1>Notes</h1>
+     <button onClick={handleShowAll}>Show All</button>
+      {notes.filter(() => {
+        if(seeAll ===true) return true
+      })
+      .map((note) => (
         <div key={note.id} className="note">
           <h2>{note.title}</h2>
           <p>{note.description}</p>
