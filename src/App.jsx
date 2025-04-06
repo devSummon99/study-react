@@ -1,104 +1,56 @@
-import { useState } from 'react'
+import { useEffect, useState } from "react";
+import Note from "./Note";
 
-import './App.css'
+import "./App.css";
 
-function App(props) {
-  const [notes, setNotes] = useState(props.notes);
+function App() {
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNotes] = useState("");
-  const [seeAll,setSeeAll] = useState(true)
-  /*
-  const [count, setCount] = useState({
-     left : 0,
-     right : 0,
-     clicks : 0
-  });
+  // const [loading, setLoading] = useState(false);
 
-  const [clicker, setClicker] = useState([]);
+  useEffect(() => {
+    console.log("consultando");
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        setNotes(json);
+      });
+  }, []);
 
-  const handleClickLeft = () => {
-  const newCounters = {
-    ... count, 
-    left: count.left +1 ,
-    clicks : count.clicks +1
+  const handleChange = (e) => {
+    setNewNotes(e.target.value);
   };
-  setCount(newCounters);
-  setClicker(prevClickers => ([...prevClickers, "L"]))
-  }
 
-  const handleClickRight = () => {
-    setCount({
-      ...count,
-      right: count.right +1,
-      clicks: count.clicks +1
-    })
-    setClicker(prevClickers => ([...prevClickers, "R"]))
-  }
-*/
-const handleChange = (e) => {
-setNewNotes(e.target.value);
-}
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let id = Math.random(1);
 
-const handleSubmit = (event) => {
-  event.preventDefault()
-  let id =  Math.random(1);
-  console.log(notes.lenght)
- 
-  const noteAddtoState = {
-   id:id,
-   title: `creando nota ${id}`,
-   description: newNote,
-   creationDate: new Date().toISOString(),
-  }
-  console.log(noteAddtoState);
-  setNotes(notes.concat(noteAddtoState));
-  setNewNotes("")
+    const noteAddtoState = {
+      id: id,
+      title: `creando nota ${id}`,
+      body: newNote,
+    };
+    console.log(noteAddtoState);
+    setNotes(notes.concat(noteAddtoState));
+    setNewNotes("");
+  };
 
- /*
-    id: 1, 
-    title: "Meeting Notes",
-    description: "Discuss project milestones and deadlines.",
-    creationDate: "2023-03-01"
-  },*/
-
-
-}
-
-const handleShowAll = () =>{
-  setSeeAll(() => !seeAll);
-}
   return (
-    <>
-      {/*<div>
-       {count.left}
-       <button onClick={handleClickLeft}>left</button>
-       <button onClick={handleClickRight}>right</button>
-       {count.right}
-       <p>Clicks totales: {count.clicks}</p>
-       <p>{clicker.join(", ")}</p>
-      </div>
-     */}
+    <div>
+      <h1>Notes</h1>
+      <ol>
+        {notes.map((note) => (
+          <Note key={note.id} {...note} />
+        ))}
+      </ol>
 
-     <div>
-     <h1>Notes</h1>
-     <button onClick={handleShowAll}>Show All</button>
-      {notes.filter(() => {
-        if(seeAll ===true) return true
-      })
-      .map((note) => (
-        <div key={note.id} className="note">
-          <h2>{note.title}</h2>
-          <p>{note.description}</p>
-          <p>{note.creationDate}</p>
-        </div>
-      ))}
-
-    <form onSubmit={handleSubmit}>
-      <input type="text" onChange={handleChange} value={newNote}/>
-      <button >crear nota</button>
+      <form onSubmit={handleSubmit}>
+        <input type="text" onChange={handleChange} value={newNote} placeholder="nota"/>
+        <button>crear nota</button>
       </form>
-     </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
