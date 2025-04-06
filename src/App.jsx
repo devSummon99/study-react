@@ -6,15 +6,17 @@ import "./App.css";
 function App() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNotes] = useState("");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log("consultando");
+    setLoading(true);
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
       .then((json) => {
         console.log(json)
         setNotes(json);
+        setLoading(false);
       });
   }, []);
 
@@ -39,6 +41,9 @@ function App() {
   return (
     <div>
       <h1>Notes</h1>
+      {
+        loading ? "Cargando" : ""
+      }
       <ol>
         {notes.map((note) => (
           <Note key={note.id} {...note} />
