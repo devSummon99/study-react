@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+
 import Note from "./Note";
 
 import "./App.css";
+import { createNote, getNotes } from "./services/notes.services";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -11,13 +13,11 @@ function App() {
   useEffect(() => {
     console.log("consultando");
     setLoading(true);
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json)
-        setNotes(json);
-        setLoading(false);
-      });
+    getNotes().then((notes) => {
+      console.log(notes);
+      setNotes(notes);
+      setLoading(false);
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -26,24 +26,23 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let id = Math.random(1);
-
     const noteAddtoState = {
-      id: id,
-      title: `creando nota ${id}`,
+      title: `creando nota nueva`,
       body: newNote,
+      userId: 1,
     };
     console.log(noteAddtoState);
-    setNotes(notes.concat(noteAddtoState));
+    createNote(noteAddtoState).then((newNote) =>
+      setNotes((prevNotes) => prevNotes.concat(newNote))
+    );
+
     setNewNotes("");
   };
 
   return (
     <div>
       <h1>Notes</h1>
-      {
-        loading ? "Cargando" : ""
-      }
+      {loading ? "Cargando" : ""}
       <ol>
         {notes.map((note) => (
           <Note key={note.id} {...note} />
@@ -51,7 +50,12 @@ function App() {
       </ol>
 
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleChange} value={newNote} placeholder="nota"/>
+        <input
+          type="text"
+          onChange={handleChange}
+          value={newNote}
+          placeholder="nota"
+        />
         <button>crear nota</button>
       </form>
     </div>
