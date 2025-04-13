@@ -34,7 +34,9 @@ function App() {
     console.log(noteAddtoState);
     createNote(noteAddtoState).then((newNote) =>
       setNotes((prevNotes) => prevNotes.concat(newNote))
-    );
+    ).catch((e) => {
+      console.log(e);
+    });
 
     setNewNotes("");
   };
